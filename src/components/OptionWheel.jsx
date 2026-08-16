@@ -177,19 +177,35 @@ const OptionWheel = ({
   );
 
   // Wheel / touchpad scrolling, registered manually so it can be non-passive.
+  // Deltas are accumulated and only released once per gesture so a single
+  // notch (or a whole trackpad swipe) always advances exactly one option,
+  // regardless of how many wheel events the input device splits it into.
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
+    let accum = 0;
+    let cooling = false;
     const onWheel = e => {
       e.preventDefault();
+      if (cooling) return;
       const cfg = cfgRef.current;
       const delta = e.deltaMode === 1 ? e.deltaY * 24 : e.deltaY;
-      // Cap each event at one step so notchy mouse wheels move exactly one
-      // option per click, while touchpads still scroll continuously.
-      const step = Math.max(-1, Math.min(1, delta / cfg.rowH));
-      applyTarget(targetRef.current + step, false);
+      accum += delta;
       if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
-      wheelTimerRef.current = setTimeout(() => applyTarget(targetRef.current, true), 140);
+      wheelTimerRef.current = setTimeout(() => {
+        accum = 0;
+      }, 160);
+
+      const threshold = cfg.rowH * 0.5;
+      if (Math.abs(accum) >= threshold) {
+        const dir = accum > 0 ? 1 : -1;
+        accum = 0;
+        cooling = true;
+        applyTarget(Math.round(targetRef.current) + dir, true);
+        setTimeout(() => {
+          cooling = false;
+        }, 220);
+      }
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => {
@@ -288,20 +304,25 @@ const OptionWheel = ({
       onPointerCancel={handlePointerEnd}
       onKeyDown={handleKeyDown}
     >
-      {items.map((label, index) => (
-        <div
-          key={`${label}-${index}`}
-          ref={el => {
-            itemRefs.current[index] = el;
-          }}
-          role="option"
-          aria-selected={selectedIndex === index}
-          className={`option-wheel__item${selectedIndex === index ? ' option-wheel__item--selected' : ''}`}
-          onClick={() => handleItemClick(index)}
-        >
-          {label}
-        </div>
-      ))}
+      {items.map((item, index) => {
+        const label = typeof item === 'string' ? item : item.label;
+        const Icon = typeof item === 'string' ? null : item.icon;
+        return (
+          <div
+            key={`${label}-${index}`}
+            ref={el => {
+              itemRefs.current[index] = el;
+            }}
+            role="option"
+            aria-selected={selectedIndex === index}
+            className={`option-wheel__item${selectedIndex === index ? ' option-wheel__item--selected' : ''}`}
+            onClick={() => handleItemClick(index)}
+          >
+            {Icon && <Icon className="option-wheel__icon" aria-hidden="true" />}
+            <span className="option-wheel__text">{label}</span>
+          </div>
+        );
+      })}
     </div>
   );
 };

@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from "motion/react";
 import MagneticButton from "../components/MagneticButton";
 import SplitReveal from "../components/SplitReveal";
 import OptionWheel from "../components/OptionWheel";
+import { MailIcon, WhatsAppIcon, LinkedInIcon, InstagramIcon } from "../components/icons/ContactIcons";
 import { profile } from "../data/portfolio";
 
 const contactMethods = [
-    { label: "Gmail", href: `mailto:${profile.email}`, external: false },
-    { label: "LinkedIn", href: profile.linkedin, external: true },
-    { label: "WhatsApp", href: `https://wa.me/${profile.whatsapp}`, external: true },
-    { label: "Instagram", href: profile.instagram, external: true },
+    { label: "Say Hello", icon: MailIcon, href: `mailto:${profile.email}`, external: false },
+    { label: "Let's Talk", icon: WhatsAppIcon, href: `https://wa.me/${profile.whatsapp}`, external: true },
+    { label: "View Profile", icon: LinkedInIcon, href: profile.linkedin, external: true },
+    { label: "Follow Along", icon: InstagramIcon, href: profile.instagram, external: true },
 ];
 
 const Contact = () => {
@@ -48,65 +49,74 @@ const Contact = () => {
                 </motion.p>
 
                 <motion.div
+                    layout
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.15 }}
-                    className="mt-10 flex flex-col items-center"
+                    className="mt-10 flex flex-col md:flex-row items-center justify-center gap-6"
                 >
-                    <MagneticButton
-                        as="button"
-                        type="button"
-                        onClick={() => setOpen((v) => !v)}
-                        data-cursor="grow"
-                        className="six-caps-regular text-[8vw] md:text-[3vw] tracking-wide bg-maroon text-off-white px-10 md:px-14 py-5 md:py-7 rounded-full"
-                    >
-                        {open ? "Choose a Way ↓" : "Say Hello ↗"}
-                    </MagneticButton>
+                    <motion.div layout transition={{ layout: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}>
+                        <MagneticButton
+                            as="button"
+                            type="button"
+                            onClick={() => setOpen((v) => !v)}
+                            data-cursor="grow"
+                            className="six-caps-regular text-[8vw] md:text-[3vw] tracking-wide bg-maroon text-off-white px-10 md:px-14 py-5 md:py-7 rounded-full shrink-0 overflow-hidden"
+                        >
+                            <AnimatePresence mode="wait" initial={false}>
+                                <motion.span
+                                    key={open ? "close" : "open"}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -12 }}
+                                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                                    className="inline-block"
+                                >
+                                    {open ? "Choose a Way →" : "Say Hello ↗"}
+                                </motion.span>
+                            </AnimatePresence>
+                        </MagneticButton>
+                    </motion.div>
 
                     <AnimatePresence>
                         {open && (
                             <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
+                                layout
+                                initial={{ opacity: 0, scale: 0.9, x: -16 }}
+                                animate={{ opacity: 1, scale: 1, x: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, x: -16 }}
                                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                className="w-full max-w-xs overflow-hidden"
+                                className="w-72 h-52.5 relative"
+                                data-lenis-prevent
                             >
-                                <div className="mt-8 h-52.5 relative" data-lenis-prevent>
-                                    <OptionWheel
-                                        items={contactMethods.map((m) => m.label)}
-                                        defaultSelected={0}
-                                        onSelect={(index) => handleSelect(index)}
-                                        side="left"
-                                        fontSize={2}
-                                        spacing={1.3}
-                                        inset={0}
-                                        curve={0.6}
-                                        tilt={10}
-                                        textColor="rgba(18,10,8,0.35)"
-                                        activeColor="#9a0002"
-                                        className="mx-auto"
-                                    />
-                                </div>
+                                <OptionWheel
+                                    items={contactMethods.map((m) => ({ label: m.label, icon: m.icon }))}
+                                    defaultSelected={0}
+                                    onSelect={(index) => handleSelect(index)}
+                                    side="left"
+                                    fontSize={1.6}
+                                    spacing={1.5}
+                                    inset={0}
+                                    curve={0.6}
+                                    tilt={10}
+                                    textColor="rgba(18,10,8,0.35)"
+                                    activeColor="#9a0002"
+                                />
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </motion.div>
 
-                <div className="mt-14 flex items-center justify-center gap-8 text-sm tracking-[0.15em] uppercase">
+                <motion.div
+                    layout
+                    transition={{ layout: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
+                    className="mt-14 flex items-center justify-center text-sm tracking-[0.15em] uppercase"
+                >
                     <a href={profile.github} target="_blank" rel="noreferrer" data-cursor="grow" className="hover:text-maroon transition-colors">
                         GitHub
                     </a>
-                    <span className="w-1 h-1 rounded-full bg-ink/30" />
-                    <a href={profile.linkedin} target="_blank" rel="noreferrer" data-cursor="grow" className="hover:text-maroon transition-colors">
-                        LinkedIn
-                    </a>
-                    <span className="w-1 h-1 rounded-full bg-ink/30" />
-                    <a href={profile.instagram} target="_blank" rel="noreferrer" data-cursor="grow" className="hover:text-maroon transition-colors">
-                        Instagram
-                    </a>
-                </div>
+                </motion.div>
             </div>
         </section>
     );

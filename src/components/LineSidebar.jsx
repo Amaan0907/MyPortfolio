@@ -32,6 +32,7 @@ const LineSidebar = ({
     fontSize = 1.1,
     smoothing = 100,
     defaultActive = null,
+    activeIndex: activeIndexProp,
     onItemClick,
     className = ''
 }) => {
@@ -50,6 +51,12 @@ const LineSidebar = ({
 
     activeRef.current = activeIndex;
     smoothingRef.current = smoothing;
+
+    // When driven externally (e.g. a scroll-spy tracking the current page
+    // section), the controlled prop takes over from the click-set state.
+    useEffect(() => {
+        if (activeIndexProp != null) setActiveIndex(activeIndexProp);
+    }, [activeIndexProp]);
 
     // Single rAF loop that eases every item's --effect toward its target using
     // frame-rate independent exponential smoothing, so color, shift and scale
@@ -230,8 +237,19 @@ const LineSidebar = ({
                     font-size: var(--font-size);
                     line-height: 1.2;
                     color: color-mix(in srgb, var(--accent-color) calc(var(--effect, 0) * 100%), var(--text-color));
-                    transform: translateX(calc(var(--effect, 0) * var(--max-shift)));
+                    transform: translateX(calc(var(--effect, 0) * var(--max-shift))) scale(1);
+                    transform-origin: left center;
                     will-change: transform;
+                    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), font-weight 0.2s ease;
+                }
+
+                /* The current page's entry always reads bigger and bolder than
+                   any item merely being hovered, so it stays legible as the
+                   one you're on rather than just another proximity glow. */
+                .line-sidebar__item[aria-current='true'] .line-sidebar__label {
+                    font-weight: 700;
+                    color: var(--accent-color);
+                    transform: translateX(calc(var(--effect, 0) * var(--max-shift))) scale(1.22);
                 }
 
                 .line-sidebar__index {

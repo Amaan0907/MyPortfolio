@@ -8,13 +8,20 @@ const scrollToId = (href) => {
     if (el) el.scrollIntoView({ behavior: "smooth" });
 };
 
+// One accent per section (Overview, About Me, Projects, Contact), chosen for
+// contrast against that section's own background rather than a single fixed
+// color that would wash out on some of them (e.g. cream-on-cream in Contact).
+const SECTION_ACCENTS = ["#fedcbb", "#9a0002", "#fedcbb", "#9a0002"];
+
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [overDarkSection, setOverDarkSection] = useState(false);
+    const [activeSection, setActiveSection] = useState(0);
 
     useEffect(() => {
         const projectsEl = document.querySelector("#projects");
+        const sectionEls = navItems.map((item) => document.querySelector(item.href));
 
         const onScroll = () => {
             setScrolled(window.scrollY > 200);
@@ -24,6 +31,16 @@ const Navbar = () => {
                 const mid = window.innerHeight / 2;
                 setOverDarkSection(rect.top <= mid && rect.bottom >= mid);
             }
+
+            // Scroll-spy: whichever section's top has crossed a line near the
+            // top of the viewport is the one currently being read.
+            const reference = window.innerHeight * 0.35;
+            let current = 0;
+            sectionEls.forEach((el, i) => {
+                if (!el) return;
+                if (el.getBoundingClientRect().top <= reference) current = i;
+            });
+            setActiveSection(current);
         };
 
         onScroll();
@@ -101,11 +118,12 @@ const Navbar = () => {
                     >
                         <LineSidebar
                             items={navItems.map((i) => i.label)}
-                            accentColor="#fedcbb"
+                            accentColor={SECTION_ACCENTS[activeSection] ?? "#fedcbb"}
                             textColor="currentColor"
                             markerColor="currentColor"
                             fontSize={0.85}
                             itemGap={16}
+                            activeIndex={activeSection}
                             onItemClick={(idx) => scrollToId(navItems[idx].href)}
                         />
                     </motion.div>

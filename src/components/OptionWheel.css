@@ -24,6 +24,9 @@
   position: absolute;
   top: 50%;
   left: var(--ow-inset);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   white-space: nowrap;
   font-size: var(--ow-font-size);
   line-height: 1;
@@ -33,6 +36,12 @@
   will-change: transform, opacity, filter;
   /* --ow-p goes 0 -> 1 as an option approaches the middle of the wheel */
   color: color-mix(in srgb, var(--ow-active-color) calc(var(--ow-p, 0) * 100%), var(--ow-text-color));
+}
+
+.option-wheel__icon {
+  width: 0.75em;
+  height: 0.75em;
+  flex-shrink: 0;
 }
 
 .option-wheel--right .option-wheel__item {
