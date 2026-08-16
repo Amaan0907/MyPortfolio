@@ -4,6 +4,10 @@ export const profile = {
     tagline: "Computer Science student specializing in AI/ML, building full-stack applications and exploring the world of machine learning.",
     github: "https://github.com/Amaan0907",
     email: "mohdamaan00907@gmail.com",
+    phone: "+91 99975 86108",
+    whatsapp: "919997586108",
+    linkedin: "https://www.linkedin.com/in/mohd-amaan-3ba27a362/",
+    instagram: "https://www.instagram.com/amaan__917/",
     location: "India",
     stats: [
         { label: "Public Repos", value: "10+" },
