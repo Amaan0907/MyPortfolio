@@ -3,9 +3,7 @@ const Footer = () => (
         <p className="text-xs tracking-[0.15em] uppercase text-ink/50">
             © {new Date().getFullYear()} Amaan. Designed &amp; built from scratch.
         </p>
-        <p className="text-xs tracking-[0.15em] uppercase text-ink/50">
-            React · GSAP · Framer Motion · Lenis
-        </p>
+        
     </footer>
 );
 
