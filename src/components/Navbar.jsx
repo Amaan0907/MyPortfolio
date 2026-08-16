@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import LineSidebar from "./LineSidebar";
 import { navItems, profile } from "../data/portfolio";
 
@@ -10,10 +10,22 @@ const scrollToId = (href) => {
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 200);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     return (
         <>
-            <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-6 mix-blend-difference text-off-white pointer-events-none">
+            <header
+                className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-6 mix-blend-difference text-off-white pointer-events-none transition-all duration-500 ease-in-out ${
+                    scrolled ? "lg:-translate-y-full lg:opacity-0" : ""
+                }`}
+            >
                 <a
                     href="#hero"
                     onClick={(e) => {
@@ -63,18 +75,28 @@ const Navbar = () => {
                 </nav>
             </header>
 
-            {/* Desktop proximity side-nav */}
-            <div className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40 mix-blend-difference text-off-white">
-                <LineSidebar
-                    items={navItems.map((i) => i.label)}
-                    accentColor="#fedcbb"
-                    textColor="currentColor"
-                    markerColor="currentColor"
-                    fontSize={0.85}
-                    itemGap={16}
-                    onItemClick={(idx) => scrollToId(navItems[idx].href)}
-                />
-            </div>
+            {/* Desktop proximity side-nav, revealed once the navbar has scrolled out of view */}
+            <AnimatePresence>
+                {scrolled && (
+                    <motion.div
+                        initial={{ opacity: 0, x: -16 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -16 }}
+                        transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+                        className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40 mix-blend-difference text-off-white"
+                    >
+                        <LineSidebar
+                            items={navItems.map((i) => i.label)}
+                            accentColor="#fedcbb"
+                            textColor="currentColor"
+                            markerColor="currentColor"
+                            fontSize={0.85}
+                            itemGap={16}
+                            onItemClick={(idx) => scrollToId(navItems[idx].href)}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {menuOpen && (
                 <motion.div

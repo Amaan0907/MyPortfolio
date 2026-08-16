@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { gsap } from "gsap";
-import MultiDirectionSlideText from "../animations/MultiDirectionSldeText";
+import AuroraCycleText from "../animations/AuroraCycleText";
 import TextAnimator from "../animations/TextAnimator";
 import MagneticButton from "../components/MagneticButton";
 import { profile } from "../data/portfolio";
@@ -88,10 +88,13 @@ const Hero = () => {
             <div ref={contentRef} className="contents">
             <div ref={creamRef} className="bg-cream h-[42%] flex items-end justify-between px-6 md:px-16 pb-6 will-change-transform">
                 <div />
-                <MultiDirectionSlideText
-                    textRight="Let's Build"
-                    className="shrink-0"
-                    textClassName="six-caps-regular text-shimmer text-[18vw] md:text-[10vw] leading-[0.85] tracking-wider text-right"
+                <AuroraCycleText
+                    words={[
+                        { lead: "Let's", accent: "Build" },
+                        { lead: "Ship", accent: "Beautiful" },
+                    ]}
+                    wrapperClassName="shrink-0"
+                    className="six-caps-regular text-[18vw] md:text-[10vw] leading-[0.85] tracking-wider text-right"
                 />
             </div>
 
