@@ -2,9 +2,6 @@ import { useRef, useState } from "react";
 
 import { cn } from "../../../lib/utils";
 
-// Ported from https://animata.design/docs/text/split-text (shadcn registry).
-// Adapted to also accept a controlled `activeIndex` (e.g. driven by load
-// progress) instead of only reacting to hover.
 export default function SplitText({ text = "ANIMATA", className, activeIndex: controlledIndex }) {
     const [hoverIndex, setHoverIndex] = useState(undefined);
     const timer = useRef(undefined);
@@ -22,7 +19,6 @@ export default function SplitText({ text = "ANIMATA", className, activeIndex: co
                 className
             )}
         >
-            {/** hidden text so that we maintain the size for any text */}
             <div className="invisible leading-none">{text}</div>
             <div className="absolute top-0 flex h-full">
                 {text.split("").map((letter, index) => (

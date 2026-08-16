@@ -98,7 +98,7 @@ const Navbar = () => {
                         target="_blank"
                         rel="noreferrer"
                         data-cursor="grow"
-                        className="inline-flex items-center gap-2 text-sm tracking-[0.15em] uppercase border border-current px-4 py-2 hover:opacity-60 transition-opacity"
+                        className="inline-flex items-center gap-2 text-sm tracking-[0.15em] uppercase border border-current px-4 py-2 hover:opacity-60 transition-opacity rounded-2xl"
                     >
                         <GithubIcon className="w-4 h-4" />
                         Stalk My Code

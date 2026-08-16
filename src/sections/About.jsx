@@ -9,8 +9,8 @@ import { profile } from "../data/portfolio";
 gsap.registerPlugin(ScrollTrigger);
 
 // TextFlip's keyframes are built for a 5-item stack (last === first, for a
-// seamless loop), so the two real facts are repeated to fill that shape.
-const CORNER_WORDS = [profile.location, "Full Stack Dev", profile.location, "Full Stack Dev", profile.location];
+// seamless loop), so the first word is repeated at the end.
+const CORNER_WORDS = ["love", "fantastic", "awesome", "fire", "love"];
 
 // Splits plain text into word spans so the scroll-linked highlight below can
 // fade each one from dim to full ink independently.
@@ -120,7 +120,7 @@ const About = () => {
                             onMouseEnter={() => setHovering(true)}
                             onMouseLeave={() => setHovering(false)}
                             onMouseMove={handlePhotoMove}
-                            className="relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-ink/10 bg-maroon"
+                            className="relative aspect-4/5 w-full overflow-hidden rounded-2xl "
                         >
                             {!imgError ? (
                                 <>
@@ -147,8 +147,9 @@ const About = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="absolute -bottom-4 -right-4 bg-cream text-ink text-[11px] tracking-[0.2em] uppercase px-4 py-2 rounded-full border border-ink/10">
-                            <TextFlip words={CORNER_WORDS} />
+                        <div className="absolute -bottom-4 -right-4 flex items-center gap-1.5 bg-cream text-ink text-[11px] tracking-[0.2em] uppercase px-4 py-2 rounded-full border border-ink/10">
+                            <span>Coding is</span>
+                            <TextFlip words={CORNER_WORDS} className="text-maroon text-[13px] " />
                         </div>
                     </motion.div>
 

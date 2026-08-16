@@ -20,7 +20,7 @@ export const profile = {
 export const skills = [
     "React", "JavaScript", "Node.js", "Express", "MongoDB",
     "Python", "Tailwind CSS", "GSAP", "Firebase", "Next.js",
-    "REST APIs", "Git & GitHub",
+    "REST APIs", "Git", "GitHub", "Go", "Java", "Redis",
 ];
 
 export const projects = [

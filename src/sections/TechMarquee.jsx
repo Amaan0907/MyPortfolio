@@ -1,8 +1,45 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { Webhook } from "lucide-react";
+import {
+    SiReact,
+    SiJavascript,
+    SiNodedotjs,
+    SiExpress,
+    SiMongodb,
+    SiPython,
+    SiTailwindcss,
+    SiGreensock,
+    SiFirebase,
+    SiNextdotjs,
+    SiGit,
+    SiGithub,
+    SiGo,
+    SiRedis,
+} from "react-icons/si";
+import { FaJava } from "react-icons/fa6";
 import { skills } from "../data/portfolio";
 
-const MarqueeRow = ({ items, direction = "left", duration = 28 }) => {
+const SKILL_ICONS = {
+    React: SiReact,
+    JavaScript: SiJavascript,
+    "Node.js": SiNodedotjs,
+    Express: SiExpress,
+    MongoDB: SiMongodb,
+    Python: SiPython,
+    "Tailwind CSS": SiTailwindcss,
+    GSAP: SiGreensock,
+    Firebase: SiFirebase,
+    "Next.js": SiNextdotjs,
+    "REST APIs": Webhook,
+    Git: SiGit,
+    GitHub: SiGithub,
+    Go: SiGo,
+    Java: FaJava,
+    Redis: SiRedis,
+};
+
+const MarqueeRow = ({ items, direction = "left", duration = 28, mode = "text" }) => {
     const trackRef = useRef(null);
 
     useEffect(() => {
@@ -42,15 +79,26 @@ const MarqueeRow = ({ items, direction = "left", duration = 28 }) => {
     return (
         <div className="overflow-hidden">
             <div ref={trackRef} className="flex w-max whitespace-nowrap">
-                {doubled.map((skill, i) => (
-                    <span
-                        key={`${skill}-${i}`}
-                        className="six-caps-regular text-[7vw] md:text-[3.2vw] leading-none tracking-wide text-off-white/90 px-8 flex items-center gap-8"
-                    >
-                        {skill}
-                        <span className="text-cream text-3xl md:text-2xl">✦</span>
-                    </span>
-                ))}
+                {doubled.map((skill, i) => {
+                    const Icon = SKILL_ICONS[skill];
+                    return (
+                        <span
+                            key={`${skill}-${i}`}
+                            className={`leading-none text-off-white/90 px-8 flex items-center ${
+                                mode === "icon" ? "text-[6vw] md:text-[2.6vw]" : "six-caps-regular text-[7vw] md:text-[3.2vw] tracking-wide"
+                            }`}
+                        >
+                            {mode === "icon" && Icon ? (
+                                <>
+                                    <Icon aria-hidden="true" />
+                                    <span className="sr-only">{skill}</span>
+                                </>
+                            ) : (
+                                skill
+                            )}
+                        </span>
+                    );
+                })}
             </div>
         </div>
     );
@@ -61,8 +109,8 @@ const TechMarquee = () => {
 
     return (
         <section className="relative w-full bg-maroon py-6 md:py-8 overflow-hidden border-y border-off-white/10 flex flex-col gap-3 md:gap-4">
-            <MarqueeRow items={skills} direction="left" duration={28} />
-            <MarqueeRow items={reversedSkills} direction="right" duration={28} />
+            <MarqueeRow items={skills} direction="left" duration={28} mode="text" />
+            <MarqueeRow items={reversedSkills} direction="right" duration={28} mode="icon" />
         </section>
     );
 };
