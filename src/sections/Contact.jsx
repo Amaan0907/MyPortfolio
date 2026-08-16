@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import MagneticButton from "../components/MagneticButton";
 import SplitReveal from "../components/SplitReveal";
 import OptionWheel from "../components/OptionWheel";
-import { MailIcon, WhatsAppIcon, LinkedInIcon, InstagramIcon } from "../components/icons/ContactIcons";
+import { MailIcon, WhatsAppIcon, LinkedInIcon, InstagramIcon, GithubIcon } from "../components/icons/ContactIcons";
 import { profile } from "../data/portfolio";
 
 const contactMethods = [
@@ -113,8 +113,9 @@ const Contact = () => {
                     transition={{ layout: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
                     className="mt-14 flex items-center justify-center text-sm tracking-[0.15em] uppercase"
                 >
-                    <a href={profile.github} target="_blank" rel="noreferrer" data-cursor="grow" className="hover:text-maroon transition-colors">
-                        GitHub
+                    <a href={profile.github} target="_blank" rel="noreferrer" data-cursor="grow" className="inline-flex items-center gap-2 hover:text-maroon transition-colors">
+                        <GithubIcon className="w-4 h-4" />
+                        Stalk My Code
                     </a>
                 </motion.div>
             </div>

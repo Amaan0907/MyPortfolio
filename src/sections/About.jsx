@@ -3,14 +3,31 @@ import { motion } from "motion/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitReveal from "../components/SplitReveal";
+import TextFlip from "../components/animata/text/text-flip";
 import { profile } from "../data/portfolio";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// TextFlip's keyframes are built for a 5-item stack (last === first, for a
+// seamless loop), so the two real facts are repeated to fill that shape.
+const CORNER_WORDS = [profile.location, "Full Stack Dev", profile.location, "Full Stack Dev", profile.location];
+
+// Splits plain text into word spans so the scroll-linked highlight below can
+// fade each one from dim to full ink independently.
+const renderWords = (text) =>
+    text.split(" ").flatMap((word, i, arr) => [
+        <span key={i} className="about-word">
+            {word}
+        </span>,
+        i < arr.length - 1 ? " " : null,
+    ]);
 
 const About = () => {
     const statsRef = useRef(null);
     const photoWrapRef = useRef(null);
     const colorLayerRef = useRef(null);
+    const paragraph1Ref = useRef(null);
+    const paragraph2Ref = useRef(null);
     const [imgError, setImgError] = useState(false);
     const [hovering, setHovering] = useState(false);
 
@@ -52,6 +69,28 @@ const About = () => {
                     },
                 }
             );
+
+            // As each paragraph scrolls through, its words darken from a dim
+            // ink to full black in sequence, rather than appearing all at once.
+            [paragraph1Ref, paragraph2Ref].forEach((ref) => {
+                const words = ref.current?.querySelectorAll(".about-word");
+                if (!words?.length) return;
+                gsap.fromTo(
+                    words,
+                    { color: "rgba(18,10,8,0.25)" },
+                    {
+                        color: "rgba(18,10,8,1)",
+                        stagger: 0.02,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: ref.current,
+                            start: "top 85%",
+                            end: "bottom 55%",
+                            scrub: 0.5,
+                        },
+                    }
+                );
+            });
         }, statsRef);
         return () => ctx.revert();
     }, []);
@@ -109,34 +148,35 @@ const About = () => {
                             )}
                         </div>
                         <div className="absolute -bottom-4 -right-4 bg-cream text-ink text-[11px] tracking-[0.2em] uppercase px-4 py-2 rounded-full border border-ink/10">
-                            {profile.location}
+                            <TextFlip words={CORNER_WORDS} />
                         </div>
                     </motion.div>
 
                     <div className="grid gap-8 sm:grid-cols-2">
                         <motion.p
+                            ref={paragraph1Ref}
                             initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.4 }}
                             transition={{ duration: 0.8 }}
-                            className="text-lg md:text-xl leading-relaxed text-ink/70"
+                            className="text-lg md:text-xl leading-relaxed text-ink/25"
                         >
-                            I'm Amaan — a Computer Science student who specializes in AI/ML and spends most of
-                            my time turning ideas into full-stack products. From crafting pixel-perfect
-                            interfaces in React to shipping production-ready backends with Node.js and
-                            MongoDB, I care about the details that make software feel effortless to use.
+                            {renderWords(
+                                "I'm Amaan — a Computer Science student who specializes in AI/ML and spends most of my time turning ideas into full-stack products. From crafting pixel-perfect interfaces in React to shipping production-ready backends with Node.js and MongoDB, I care about the details that make software feel effortless to use."
+                            )}
                         </motion.p>
 
                         <motion.p
+                            ref={paragraph2Ref}
                             initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.4 }}
                             transition={{ duration: 0.8, delay: 0.15 }}
-                            className="text-lg md:text-xl leading-relaxed text-ink/70"
+                            className="text-lg md:text-xl leading-relaxed text-ink/25"
                         >
-                            Outside of coursework, I build things I'm curious about — an AI interview coach,
-                            a video-hosting backend, machine-learning models that predict real-world numbers.
-                            Every project on this site is public, shipped, and on{" "}
+                            {renderWords(
+                                "Outside of coursework, I build things I'm curious about — an AI interview coach, a video-hosting backend, machine-learning models that predict real-world numbers. Every project on this site is public, shipped, and on"
+                            )}{" "}
                             <a href={profile.github} target="_blank" rel="noreferrer" className="text-maroon underline underline-offset-4">
                                 GitHub
                             </a>

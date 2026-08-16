@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import LineSidebar from "./LineSidebar";
+import { GithubIcon } from "./icons/ContactIcons";
 import { navItems, profile } from "../data/portfolio";
 
 const scrollToId = (href) => {
@@ -97,9 +98,10 @@ const Navbar = () => {
                         target="_blank"
                         rel="noreferrer"
                         data-cursor="grow"
-                        className="text-sm tracking-[0.15em] uppercase border border-current px-4 py-2 hover:opacity-60 transition-opacity"
+                        className="inline-flex items-center gap-2 text-sm tracking-[0.15em] uppercase border border-current px-4 py-2 hover:opacity-60 transition-opacity"
                     >
-                        GitHub ↗
+                        <GithubIcon className="w-4 h-4" />
+                        Stalk My Code
                     </a>
                 </nav>
             </header>
@@ -156,9 +158,10 @@ const Navbar = () => {
                         href={profile.github}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-4 text-sm tracking-[0.2em] uppercase text-cream"
+                        className="mt-4 inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase text-cream"
                     >
-                        GitHub ↗
+                        <GithubIcon className="w-4 h-4" />
+                        Stalk My Code
                     </a>
                 </motion.div>
             )}
