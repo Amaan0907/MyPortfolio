@@ -22,7 +22,7 @@ const Navbar = () => {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-6 mix-blend-difference text-off-white pointer-events-none transition-all duration-500 ease-in-out ${
+                className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-6 text-black drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] pointer-events-none transition-all duration-500 ease-in-out ${
                     scrolled ? "lg:-translate-y-full lg:opacity-0" : ""
                 }`}
             >
@@ -83,7 +83,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -16 }}
                         transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
-                        className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40 mix-blend-difference text-off-white"
+                        className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40 text-black drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
                     >
                         <LineSidebar
                             items={navItems.map((i) => i.label)}
