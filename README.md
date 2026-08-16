@@ -1,16 +1,86 @@
-# React + Vite
+# Amaan — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A personal portfolio site for Amaan, a Full Stack Developer and Computer Science student specializing in AI/ML. Built as a fast, animation-driven single-page site showcasing projects, skills, and contact info.
 
-Currently, two official plugins are available:
+**Live site:** add your deployed URL here
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- Smooth scrolling powered by [Lenis](https://github.com/darkroomengineering/lenis)
+- Scroll and text animations built with [GSAP](https://gsap.com/)
+- Custom cursor, magnetic buttons, and an animated preloader
+- Project showcase pulled from a single data source ([src/data/portfolio.js](src/data/portfolio.js))
+- Responsive layout styled with Tailwind CSS v4
+- Sections: Overview, About Me, Tech Stack, Projects, Contact
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **React 19** + **Vite 7**
+- **Tailwind CSS 4**
+- **GSAP** for animations
+- **Lenis** for smooth scrolling
+- **Motion** (Framer Motion successor)
+- **Base UI** + **lucide-react** / **react-icons** for UI primitives and icons
+- **ESLint** for linting
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started
+
+### Prerequisites
+
+- Node.js (LTS recommended)
+- npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+Starts the Vite dev server with hot module reloading.
+
+### Build
+
+```bash
+npm run build
+```
+
+Produces a production build in `dist/`.
+
+### Preview
+
+```bash
+npm run preview
+```
+
+Serves the production build locally.
+
+### Lint
+
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```
+src/
+├── animations/       # Reusable text/character animation components
+├── components/       # Shared UI (Navbar, Footer, Preloader, Cursor, etc.)
+├── data/             # Site content (profile, skills, projects)
+├── lib/              # Utilities and smooth-scroll setup
+└── sections/         # Page sections (Hero, About, Projects, Contact, ...)
+```
+
+## Editing Content
+
+All personal info, skills, and project entries live in [src/data/portfolio.js](src/data/portfolio.js). Update the `profile`, `skills`, and `projects` objects there to change the site's content without touching component code.
+
+## License
+
+Personal project — all rights reserved.
