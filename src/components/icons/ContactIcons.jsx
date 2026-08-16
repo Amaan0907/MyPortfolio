@@ -1,6 +1,3 @@
-// Minimal 24x24 stroke icons (2px, round caps/joins) matching lucide-react's
-// style, kept local since lucide dropped its brand icons (LinkedIn, Instagram)
-// and has nothing WhatsApp-shaped.
 const base = {
     viewBox: "0 0 24 24",
     fill: "none",
@@ -40,7 +37,6 @@ export const InstagramIcon = (props) => (
     </svg>
 );
 
-// Filled brand mark (GitHub's own logo is a silhouette, not an outline).
 export const GithubIcon = (props) => (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
         <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.38.97.1-.75.4-1.27.73-1.56-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.06 11.06 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.24 2.75.12 3.04.74.81 1.18 1.84 1.18 3.09 0 4.41-2.68 5.38-5.24 5.67.41.35.78 1.04.78 2.11 0 1.52-.01 2.75-.01 3.12 0 .3.2.66.79.55A11.5 11.5 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5z" />

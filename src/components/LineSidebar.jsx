@@ -52,15 +52,10 @@ const LineSidebar = ({
     activeRef.current = activeIndex;
     smoothingRef.current = smoothing;
 
-    // When driven externally (e.g. a scroll-spy tracking the current page
-    // section), the controlled prop takes over from the click-set state.
     useEffect(() => {
         if (activeIndexProp != null) setActiveIndex(activeIndexProp);
     }, [activeIndexProp]);
 
-    // Single rAF loop that eases every item's --effect toward its target using
-    // frame-rate independent exponential smoothing, so color, shift and scale
-    // all move together without staggering CSS transitions.
     const runFrame = useCallback(now => {
         const dt = Math.min((now - lastRef.current) / 1000, 0.05);
         lastRef.current = now;
@@ -94,10 +89,6 @@ const LineSidebar = ({
         rafRef.current = requestAnimationFrame(runFrame);
     }, [runFrame]);
 
-    // Measure each item's vertical center ONCE (and whenever layout can change),
-    // instead of on every pointermove. Reading offsetTop/offsetHeight inside a
-    // mousemove handler forces a synchronous layout on every event, which is
-    // what causes the stutter/jank — this removes that reflow from the hot path.
     const measure = useCallback(() => {
         const items = itemRefs.current;
         const centers = new Array(items.length);
@@ -118,9 +109,6 @@ const LineSidebar = ({
         return () => ro.disconnect();
     }, [measure, items, showIndex, fontSize, itemGap]);
 
-    // Recompute targets from the cached centers. Coalesced to one rAF per
-    // frame via pendingYRef, so a burst of pointermove events collapses into
-    // a single calculation instead of one per event.
     const applyPointerY = useCallback(
         pointerY => {
             const ease = FALLOFF_CURVES[falloff] ?? FALLOFF_CURVES.linear;
@@ -243,9 +231,6 @@ const LineSidebar = ({
                     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), font-weight 0.2s ease;
                 }
 
-                /* The current page's entry always reads bigger and bolder than
-                   any item merely being hovered, so it stays legible as the
-                   one you're on rather than just another proximity glow. */
                 .line-sidebar__item[aria-current='true'] .line-sidebar__label {
                     font-weight: 700;
                     color: var(--accent-color);

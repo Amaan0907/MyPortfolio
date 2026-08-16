@@ -36,7 +36,6 @@ export default function SplitText({ text = "ANIMATA", className, activeIndex: co
                         className="relative inline-flex h-full flex-col leading-none"
                         aria-hidden
                     >
-                        {/** top half */}
                         <span
                             className={cn(letterClassName, {
                                 "-translate-y-5": index === activeIndex,
@@ -51,7 +50,6 @@ export default function SplitText({ text = "ANIMATA", className, activeIndex: co
                             {letter}
                         </span>
 
-                        {/** bottom half */}
                         <span
                             className={cn(letterClassName, {
                                 "translate-y-5": index === activeIndex,

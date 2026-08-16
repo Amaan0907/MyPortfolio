@@ -28,7 +28,6 @@ const Preloader = ({ onComplete }) => {
                     percentRef.current.textContent = String(Math.floor(counter.value)).padStart(3, "0");
                 }
 
-                // Sweep the split-letter effect across the text in step with load progress.
                 const index = Math.min(LOAD_TEXT.length - 1, Math.round(progress * (LOAD_TEXT.length - 1)));
                 if (index !== lastIndex) {
                     lastIndex = index;
@@ -40,7 +39,6 @@ const Preloader = ({ onComplete }) => {
                 }
             },
             onComplete: () => {
-                // Resolve the split effect so the complete word holds on screen before exiting.
                 setActiveIndex(undefined);
             },
         }).to(

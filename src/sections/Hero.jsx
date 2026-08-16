@@ -36,7 +36,6 @@ const Hero = () => {
                 },
             });
 
-            // Fade + settle the hero copy out as the section scrolls past.
             gsap.to(contentRef.current, {
                 opacity: 0.15,
                 yPercent: -6,
@@ -49,7 +48,6 @@ const Hero = () => {
                 },
             });
 
-            // Subtle pointer-driven tilt on the giant name, desktop only.
             if (window.matchMedia("(pointer: fine)").matches) {
                 const el = nameRef.current;
                 if (el) {

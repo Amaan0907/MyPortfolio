@@ -8,12 +8,8 @@ import { profile } from "../data/portfolio";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// TextFlip's keyframes are built for a 5-item stack (last === first, for a
-// seamless loop), so the first word is repeated at the end.
 const CORNER_WORDS = ["love", "fantastic", "awesome", "fire", "love"];
 
-// Splits plain text into word spans so the scroll-linked highlight below can
-// fade each one from dim to full ink independently.
 const renderWords = (text) =>
     text.split(" ").flatMap((word, i, arr) => [
         <span key={i} className="about-word">
@@ -70,8 +66,6 @@ const About = () => {
                 }
             );
 
-            // As each paragraph scrolls through, its words darken from a dim
-            // ink to full black in sequence, rather than appearing all at once.
             [paragraph1Ref, paragraph2Ref].forEach((ref) => {
                 const words = ref.current?.querySelectorAll(".about-word");
                 if (!words?.length) return;
@@ -130,7 +124,6 @@ const About = () => {
                                         onError={() => setImgError(true)}
                                         className="h-full w-full object-cover grayscale"
                                     />
-                                    {/* Color layer, revealed only within a radius around the cursor via a following mask. */}
                                     <img
                                         ref={colorLayerRef}
                                         src="/images/amaan.jpg"
