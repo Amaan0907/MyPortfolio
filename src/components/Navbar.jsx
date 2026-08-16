@@ -11,9 +11,21 @@ const scrollToId = (href) => {
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [overDarkSection, setOverDarkSection] = useState(false);
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 200);
+        const projectsEl = document.querySelector("#projects");
+
+        const onScroll = () => {
+            setScrolled(window.scrollY > 200);
+
+            if (projectsEl) {
+                const rect = projectsEl.getBoundingClientRect();
+                const mid = window.innerHeight / 2;
+                setOverDarkSection(rect.top <= mid && rect.bottom >= mid);
+            }
+        };
+
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
@@ -83,7 +95,9 @@ const Navbar = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -16 }}
                         transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
-                        className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40 text-black drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]"
+                        className={`hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40 drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] transition-colors duration-300 ${
+                            overDarkSection ? "text-off-white" : "text-black"
+                        }`}
                     >
                         <LineSidebar
                             items={navItems.map((i) => i.label)}

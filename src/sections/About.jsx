@@ -10,7 +10,20 @@ gsap.registerPlugin(ScrollTrigger);
 const About = () => {
     const statsRef = useRef(null);
     const photoWrapRef = useRef(null);
+    const colorLayerRef = useRef(null);
     const [imgError, setImgError] = useState(false);
+    const [hovering, setHovering] = useState(false);
+
+    const handlePhotoMove = (e) => {
+        const el = colorLayerRef.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const mask = `radial-gradient(120px circle at ${x}px ${y}px, black 55%, transparent 100%)`;
+        el.style.maskImage = mask;
+        el.style.webkitMaskImage = mask;
+    };
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -65,15 +78,30 @@ const About = () => {
                     >
                         <div
                             ref={photoWrapRef}
+                            onMouseEnter={() => setHovering(true)}
+                            onMouseLeave={() => setHovering(false)}
+                            onMouseMove={handlePhotoMove}
                             className="relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-ink/10 bg-maroon"
                         >
                             {!imgError ? (
-                                <img
-                                    src="/images/amaan.jpg"
-                                    alt="Amaan — Full Stack Developer"
-                                    onError={() => setImgError(true)}
-                                    className="h-full w-full object-cover grayscale hover:grayscale-0 transition-[filter] duration-700 ease-out"
-                                />
+                                <>
+                                    <img
+                                        src="/images/amaan.jpg"
+                                        alt="Amaan — Full Stack Developer"
+                                        onError={() => setImgError(true)}
+                                        className="h-full w-full object-cover grayscale"
+                                    />
+                                    {/* Color layer, revealed only within a radius around the cursor via a following mask. */}
+                                    <img
+                                        ref={colorLayerRef}
+                                        src="/images/amaan.jpg"
+                                        alt=""
+                                        aria-hidden="true"
+                                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out ${
+                                            hovering ? "opacity-100" : "opacity-0"
+                                        }`}
+                                    />
+                                </>
                             ) : (
                                 <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-maroon to-[#4a0001]">
                                     <span className="six-caps-regular text-[9rem] leading-none text-off-white/90">A</span>
