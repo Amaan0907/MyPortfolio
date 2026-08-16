@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { skills } from "../data/portfolio";
 
-const TechMarquee = () => {
+const MarqueeRow = ({ items, direction = "left", duration = 28 }) => {
     const trackRef = useRef(null);
 
     useEffect(() => {
@@ -11,9 +11,13 @@ const TechMarquee = () => {
 
         const ctx = gsap.context(() => {
             const width = track.scrollWidth / 2;
+            const fromX = direction === "left" ? 0 : -width;
+            const toX = direction === "left" ? -width : 0;
+
+            gsap.set(track, { x: fromX });
             const tween = gsap.to(track, {
-                x: -width,
-                duration: 28,
+                x: toX,
+                duration,
                 ease: "none",
                 repeat: -1,
             });
@@ -31,12 +35,12 @@ const TechMarquee = () => {
         }, trackRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [direction, duration]);
 
-    const doubled = [...skills, ...skills];
+    const doubled = [...items, ...items];
 
     return (
-        <section className="relative w-full bg-maroon py-8 md:py-10 overflow-hidden border-y border-off-white/10">
+        <div className="overflow-hidden">
             <div ref={trackRef} className="flex w-max whitespace-nowrap">
                 {doubled.map((skill, i) => (
                     <span
@@ -48,6 +52,17 @@ const TechMarquee = () => {
                     </span>
                 ))}
             </div>
+        </div>
+    );
+};
+
+const TechMarquee = () => {
+    const reversedSkills = [...skills].reverse();
+
+    return (
+        <section className="relative w-full bg-maroon py-6 md:py-8 overflow-hidden border-y border-off-white/10 flex flex-col gap-3 md:gap-4">
+            <MarqueeRow items={skills} direction="left" duration={28} />
+            <MarqueeRow items={reversedSkills} direction="right" duration={28} />
         </section>
     );
 };

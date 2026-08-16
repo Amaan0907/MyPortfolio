@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { gsap } from "gsap";
 import AuroraCycleText from "../animations/AuroraCycleText";
-import TextAnimator from "../animations/TextAnimator";
+import MagneticText from "../animations/MagneticText";
 import MagneticButton from "../components/MagneticButton";
 import { profile } from "../data/portfolio";
 
@@ -100,9 +100,9 @@ const Hero = () => {
 
             <div ref={maroonRef} className="bg-maroon h-[58%] flex flex-col justify-center px-6 md:px-16 will-change-transform relative">
                 <div ref={nameRef} className="will-change-transform" style={{ transformStyle: "preserve-3d" }}>
-                    <TextAnimator
-                        text="Amaan-Full Stack Developer"
-                        className="text-off-white six-caps-regular text-[22vw] md:text-[13vw] leading-[0.82] tracking-wider"
+                    <MagneticText
+                        text="Amaan, the Full Stack Developer"
+                        className="text-off-white six-caps-regular text-[16vw] md:text-[9vw] leading-[0.82] tracking-wider"
                     />
                 </div>
                 <motion.p
