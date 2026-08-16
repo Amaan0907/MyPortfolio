@@ -1,0 +1,115 @@
+import { useState } from "react";
+import { motion } from "motion/react";
+import LineSidebar from "./LineSidebar";
+import { navItems, profile } from "../data/portfolio";
+
+const scrollToId = (href) => {
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+};
+
+const Navbar = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    return (
+        <>
+            <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-6 mix-blend-difference text-off-white pointer-events-none">
+                <a
+                    href="#hero"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        scrollToId("#hero");
+                    }}
+                    className="six-caps-regular text-3xl tracking-widest pointer-events-auto"
+                    data-cursor="grow"
+                >
+                    AMAAN.
+                </a>
+
+                <button
+                    className="md:hidden pointer-events-auto flex flex-col gap-1.5 z-50"
+                    onClick={() => setMenuOpen((v) => !v)}
+                    aria-label="Toggle menu"
+                >
+                    <span className={`block h-px w-7 bg-current transition-transform ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
+                    <span className={`block h-px w-7 bg-current transition-opacity ${menuOpen ? "opacity-0" : ""}`} />
+                    <span className={`block h-px w-7 bg-current transition-transform ${menuOpen ? "-translate-y-2 -rotate-45" : ""}`} />
+                </button>
+
+                <nav className="hidden md:flex items-center gap-10 pointer-events-auto">
+                    {navItems.map((item) => (
+                        <a
+                            key={item.href}
+                            href={item.href}
+                            data-cursor="grow"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                scrollToId(item.href);
+                            }}
+                            className="text-sm tracking-[0.15em] uppercase hover:opacity-60 transition-opacity"
+                        >
+                            {item.label}
+                        </a>
+                    ))}
+                    <a
+                        href={profile.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        data-cursor="grow"
+                        className="text-sm tracking-[0.15em] uppercase border border-current px-4 py-2 hover:opacity-60 transition-opacity"
+                    >
+                        GitHub ↗
+                    </a>
+                </nav>
+            </header>
+
+            {/* Desktop proximity side-nav */}
+            <div className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-40 mix-blend-difference text-off-white">
+                <LineSidebar
+                    items={navItems.map((i) => i.label)}
+                    accentColor="#fedcbb"
+                    textColor="currentColor"
+                    markerColor="currentColor"
+                    fontSize={0.85}
+                    itemGap={16}
+                    onItemClick={(idx) => scrollToId(navItems[idx].href)}
+                />
+            </div>
+
+            {menuOpen && (
+                <motion.div
+                    initial={{ clipPath: "inset(0 0 100% 0)" }}
+                    animate={{ clipPath: "inset(0 0 0% 0)" }}
+                    exit={{ clipPath: "inset(0 0 100% 0)" }}
+                    transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+                    className="fixed inset-0 z-40 bg-ink flex flex-col items-center justify-center gap-8 md:hidden"
+                >
+                    {navItems.map((item) => (
+                        <a
+                            key={item.href}
+                            href={item.href}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                scrollToId(item.href);
+                                setMenuOpen(false);
+                            }}
+                            className="six-caps-regular text-6xl text-off-white tracking-wider"
+                        >
+                            {item.label}
+                        </a>
+                    ))}
+                    <a
+                        href={profile.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 text-sm tracking-[0.2em] uppercase text-cream"
+                    >
+                        GitHub ↗
+                    </a>
+                </motion.div>
+            )}
+        </>
+    );
+};
+
+export default Navbar;
