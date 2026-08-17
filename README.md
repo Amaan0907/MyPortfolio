@@ -2,7 +2,7 @@
 
 A personal portfolio site for Amaan, a Full Stack Developer and Computer Science student specializing in AI/ML. Built as a fast, animation-driven single-page site showcasing projects, skills, and contact info.
 
-**Live site:** add your deployed URL here
+**Live site:** [Amaan's Portfolio](https://amaanportfolio-kappa.vercel.app/)
 
 ## Features
 
@@ -21,50 +21,9 @@ A personal portfolio site for Amaan, a Full Stack Developer and Computer Science
 - **Lenis** for smooth scrolling
 - **Motion** (Framer Motion successor)
 - **Base UI** + **lucide-react** / **react-icons** for UI primitives and icons
-- **ESLint** for linting
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (LTS recommended)
-- npm
-
-### Installation
-
-```bash
-npm install
-```
-
-### Development
-
-```bash
-npm run dev
-```
 
 Starts the Vite dev server with hot module reloading.
 
-### Build
-
-```bash
-npm run build
-```
-
-Produces a production build in `dist/`.
-
-### Preview
-
-```bash
-npm run preview
-```
-
-Serves the production build locally.
-
-### Lint
-
-```bash
-npm run lint
-```
 
 ## Project Structure
 
