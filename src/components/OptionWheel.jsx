@@ -35,8 +35,6 @@ const OptionWheel = ({
   inset = 80,
   loop = false,
   draggable = true,
-  soundUrl = '',
-  soundVolume = 0.5,
   className = ''
 }) => {
   const rootRef = useRef(null);
@@ -52,9 +50,8 @@ const OptionWheel = ({
   const wheelTimerRef = useRef(null);
   const dragRef = useRef(null);
   const dragMovedRef = useRef(false);
-  const audioRef = useRef(null);
-  const audioUrlRef = useRef('');
-  const lastTickRef = useRef(0);
+  const touchAccumRef = useRef(0);
+  const touchCoolingRef = useRef(false);
   const [selectedIndex, setSelectedIndex] = useState(defaultSelected);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -74,9 +71,7 @@ const OptionWheel = ({
     side,
     loop,
     smoothing,
-    draggable,
-    soundUrl,
-    soundVolume
+    draggable
   };
 
   const runFrame = useCallback(now => {
@@ -133,25 +128,8 @@ const OptionWheel = ({
     rafRef.current = requestAnimationFrame(runFrame);
   }, [runFrame]);
 
-  const playTick = useCallback(() => {
-    const { soundUrl, soundVolume } = cfgRef.current;
-    if (!soundUrl) return;
-    const now = performance.now();
-    if (now - lastTickRef.current < 70) return;
-    lastTickRef.current = now;
-    if (!audioRef.current || audioUrlRef.current !== soundUrl) {
-      audioRef.current = new Audio(soundUrl);
-      audioRef.current.preload = 'auto';
-      audioUrlRef.current = soundUrl;
-    }
-    const audio = audioRef.current;
-    audio.volume = Math.min(Math.max(soundVolume, 0), 1);
-    audio.currentTime = 0;
-    audio.play()?.catch(() => {});
-  }, []);
-
   const applyTarget = useCallback(
-    (value, snap, allowSound = true) => {
+    (value, snap) => {
       const cfg = cfgRef.current;
       let v = value;
       if (!cfg.loop) v = Math.min(Math.max(v, 0), Math.max(cfg.count - 1, 0));
@@ -162,11 +140,10 @@ const OptionWheel = ({
         selectedRef.current = idx;
         setSelectedIndex(idx);
         onChangeRef.current?.(idx, cfg.items[idx]);
-        if (allowSound) playTick();
       }
       startLoop();
     },
-    [startLoop, playTick]
+    [startLoop]
   );
 
   useEffect(() => {
@@ -174,7 +151,6 @@ const OptionWheel = ({
     if (!el) return;
     let accum = 0;
     let cooling = false;
-    let gestureTicked = false;
     const onWheel = e => {
       e.preventDefault();
       if (cooling) return;
@@ -184,7 +160,6 @@ const OptionWheel = ({
       if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
       wheelTimerRef.current = setTimeout(() => {
         accum = 0;
-        gestureTicked = false;
       }, 160);
 
       const threshold = cfg.rowH * 0.5;
@@ -192,8 +167,7 @@ const OptionWheel = ({
         const dir = accum > 0 ? 1 : -1;
         accum = 0;
         cooling = true;
-        applyTarget(Math.round(targetRef.current) + dir, true, !gestureTicked);
-        gestureTicked = true;
+        applyTarget(Math.round(targetRef.current) + dir, true);
         setTimeout(() => {
           cooling = false;
         }, 220);
@@ -208,8 +182,10 @@ const OptionWheel = ({
 
   const handlePointerDown = useCallback(e => {
     if (!cfgRef.current.draggable) return;
-    dragRef.current = { y: e.clientY, start: targetRef.current, id: e.pointerId };
+    dragRef.current = { y: e.clientY, lastY: e.clientY, start: targetRef.current, id: e.pointerId, pointerType: e.pointerType };
     dragMovedRef.current = false;
+    touchAccumRef.current = 0;
+    touchCoolingRef.current = false;
     setIsDragging(true);
   }, []);
 
@@ -222,16 +198,38 @@ const OptionWheel = ({
         dragMovedRef.current = true;
         rootRef.current?.setPointerCapture(drag.id);
       }
-      if (dragMovedRef.current) applyTarget(drag.start - dy / cfgRef.current.rowH, false);
+      if (!dragMovedRef.current) return;
+
+      if (drag.pointerType === 'touch') {
+        const cfg = cfgRef.current;
+        const stepDy = e.clientY - drag.lastY;
+        drag.lastY = e.clientY;
+        touchAccumRef.current += stepDy;
+        if (touchCoolingRef.current) return;
+        const threshold = cfg.rowH * 0.5;
+        if (Math.abs(touchAccumRef.current) >= threshold) {
+          const dir = touchAccumRef.current > 0 ? -1 : 1;
+          touchAccumRef.current = 0;
+          touchCoolingRef.current = true;
+          applyTarget(Math.round(targetRef.current) + dir, true);
+          setTimeout(() => {
+            touchCoolingRef.current = false;
+          }, 160);
+        }
+        return;
+      }
+
+      applyTarget(drag.start - dy / cfgRef.current.rowH, false);
     },
     [applyTarget]
   );
 
   const handlePointerEnd = useCallback(() => {
     if (!dragRef.current) return;
+    const wasTouch = dragRef.current.pointerType === 'touch';
     dragRef.current = null;
     setIsDragging(false);
-    if (dragMovedRef.current) applyTarget(targetRef.current, true);
+    if (dragMovedRef.current && !wasTouch) applyTarget(targetRef.current, true);
   }, [applyTarget]);
 
   const handleItemClick = useCallback(
@@ -270,7 +268,6 @@ const OptionWheel = ({
     () => () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
-      audioRef.current?.pause();
     },
     []
   );
