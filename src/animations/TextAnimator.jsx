@@ -9,7 +9,7 @@ const TextAnimator = ({
     hoverEffect = true,
     startDelay = 0,
 }) => {
-    const letters = text.split("")
+    const words = text.split(" ")
 
     const pullupVariant = {
         initial: { y: 120, opacity: 0, rotate: 6 },
@@ -25,24 +25,36 @@ const TextAnimator = ({
         }),
     }
 
+    let globalIndex = 0
+
+    const renderLetter = (letter, key) => {
+        const i = globalIndex++
+        return (
+            <motion.span
+                key={key}
+                variants={pullupVariant}
+                initial="initial"
+                animate="animate"
+                custom={i}
+                whileHover={
+                    hoverEffect
+                        ? { y: -14, color: "var(--color-cream)", transition: { duration: 0.25, ease: "easeOut" } }
+                        : undefined
+                }
+                className="inline-block will-change-transform"
+            >
+                {letter}
+            </motion.span>
+        )
+    }
+
     return (
         <h1 className={clsx("flex flex-wrap", className)}>
-            {letters.map((letter, i) => (
-                <motion.span
-                    key={i}
-                    variants={pullupVariant}
-                    initial="initial"
-                    animate="animate"
-                    custom={i}
-                    whileHover={
-                        hoverEffect
-                            ? { y: -14, color: "var(--color-cream)", transition: { duration: 0.25, ease: "easeOut" } }
-                            : undefined
-                    }
-                    className="inline-block will-change-transform"
-                >
-                    {letter === " " ? <span>&nbsp;</span> : letter}
-                </motion.span>
+            {words.map((word, wi) => (
+                <span key={wi} className="inline-flex whitespace-nowrap">
+                    {word.split("").map((letter, li) => renderLetter(letter, `${wi}-${li}`))}
+                    {wi < words.length - 1 && renderLetter(" ", `space-${wi}`)}
+                </span>
             ))}
         </h1>
     )

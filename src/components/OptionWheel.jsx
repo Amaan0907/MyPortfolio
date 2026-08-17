@@ -151,7 +151,7 @@ const OptionWheel = ({
   }, []);
 
   const applyTarget = useCallback(
-    (value, snap) => {
+    (value, snap, allowSound = true) => {
       const cfg = cfgRef.current;
       let v = value;
       if (!cfg.loop) v = Math.min(Math.max(v, 0), Math.max(cfg.count - 1, 0));
@@ -162,7 +162,7 @@ const OptionWheel = ({
         selectedRef.current = idx;
         setSelectedIndex(idx);
         onChangeRef.current?.(idx, cfg.items[idx]);
-        playTick();
+        if (allowSound) playTick();
       }
       startLoop();
     },
@@ -174,6 +174,7 @@ const OptionWheel = ({
     if (!el) return;
     let accum = 0;
     let cooling = false;
+    let gestureTicked = false;
     const onWheel = e => {
       e.preventDefault();
       if (cooling) return;
@@ -183,6 +184,7 @@ const OptionWheel = ({
       if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
       wheelTimerRef.current = setTimeout(() => {
         accum = 0;
+        gestureTicked = false;
       }, 160);
 
       const threshold = cfg.rowH * 0.5;
@@ -190,7 +192,8 @@ const OptionWheel = ({
         const dir = accum > 0 ? 1 : -1;
         accum = 0;
         cooling = true;
-        applyTarget(Math.round(targetRef.current) + dir, true);
+        applyTarget(Math.round(targetRef.current) + dir, true, !gestureTicked);
+        gestureTicked = true;
         setTimeout(() => {
           cooling = false;
         }, 220);

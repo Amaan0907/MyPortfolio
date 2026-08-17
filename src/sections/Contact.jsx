@@ -102,6 +102,8 @@ const Contact = () => {
                                     tilt={10}
                                     textColor="rgba(18,10,8,0.35)"
                                     activeColor="#9a0002"
+                                    soundUrl="/sound/scroll-tick.wav"
+                                    soundVolume={0.4}
                                 />
                             </motion.div>
                         )}

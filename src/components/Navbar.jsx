@@ -64,13 +64,15 @@ const Navbar = () => {
                 </a>
 
                 <button
-                    className="md:hidden pointer-events-auto flex flex-col gap-1.5 z-50"
+                    className={`md:hidden pointer-events-auto flex flex-col gap-1.5 z-50 transition-colors duration-300 ${
+                        menuOpen ? "text-cream" : ""
+                    }`}
                     onClick={() => setMenuOpen((v) => !v)}
                     aria-label="Toggle menu"
                 >
-                    <span className={`block h-px w-7 bg-current transition-transform ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
-                    <span className={`block h-px w-7 bg-current transition-opacity ${menuOpen ? "opacity-0" : ""}`} />
-                    <span className={`block h-px w-7 bg-current transition-transform ${menuOpen ? "-translate-y-2 -rotate-45" : ""}`} />
+                    <span className={`block h-px w-7 bg-current transition-transform duration-300 ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
+                    <span className={`block h-px w-7 bg-current transition-opacity duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+                    <span className={`block h-px w-7 bg-current transition-transform duration-300 ${menuOpen ? "-translate-y-2 -rotate-45" : ""}`} />
                 </button>
 
                 <nav className="hidden md:flex items-center gap-10 pointer-events-auto">
@@ -143,7 +145,7 @@ const Navbar = () => {
                                 scrollToId(item.href);
                                 setMenuOpen(false);
                             }}
-                            className="six-caps-regular text-6xl text-off-white tracking-wider"
+                            className="six-caps-regular text-6xl text-off-white tracking-wider hover:text-cream transition-colors duration-300"
                         >
                             {item.label}
                         </a>

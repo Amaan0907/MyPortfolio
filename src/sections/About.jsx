@@ -38,6 +38,17 @@ const About = () => {
         el.style.webkitMaskImage = mask;
     };
 
+    const handlePhotoTap = () => {
+        const isTouch = typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+        if (!isTouch) return;
+        const el = colorLayerRef.current;
+        if (el) {
+            el.style.maskImage = "";
+            el.style.webkitMaskImage = "";
+        }
+        setHovering((v) => !v);
+    };
+
     useEffect(() => {
         const ctx = gsap.context(() => {
             gsap.from(".stat-item", {
@@ -114,6 +125,7 @@ const About = () => {
                             onMouseEnter={() => setHovering(true)}
                             onMouseLeave={() => setHovering(false)}
                             onMouseMove={handlePhotoMove}
+                            onClick={handlePhotoTap}
                             className="relative aspect-4/5 w-full overflow-hidden rounded-2xl "
                         >
                             {!imgError ? (

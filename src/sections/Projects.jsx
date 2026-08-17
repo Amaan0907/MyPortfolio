@@ -10,13 +10,18 @@ const colorMap = {
 };
 
 const ProjectRow = ({ project, onHover }) => (
-    <a
+    <motion.a
         href={project.live || project.github}
         target="_blank"
         rel="noreferrer"
         data-cursor="grow"
         onMouseEnter={() => onHover(project)}
         onMouseLeave={() => onHover(null)}
+        whileTap={{ scale: 0.98 }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
         className="group relative flex flex-col md:flex-row md:items-center gap-3 md:gap-6 border-b border-off-white/10 py-8 md:py-10 transition-colors"
     >
         <span className="six-caps-regular text-2xl md:text-3xl text-off-white/30 md:w-16 shrink-0">
@@ -47,7 +52,7 @@ const ProjectRow = ({ project, onHover }) => (
         <span className="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-full border border-off-white/20 text-off-white shrink-0 group-hover:bg-cream group-hover:text-ink group-hover:border-cream transition-colors">
             ↗
         </span>
-    </a>
+    </motion.a>
 );
 
 const Projects = () => {
