@@ -128,39 +128,41 @@ const Navbar = () => {
                 )}
             </AnimatePresence>
 
-            {menuOpen && (
-                <motion.div
-                    initial={{ clipPath: "inset(0 0 100% 0)" }}
-                    animate={{ clipPath: "inset(0 0 0% 0)" }}
-                    exit={{ clipPath: "inset(0 0 100% 0)" }}
-                    transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-                    className="fixed inset-0 z-40 bg-ink flex flex-col items-center justify-center gap-8 md:hidden"
-                >
-                    {navItems.map((item) => (
-                        <a
-                            key={item.href}
-                            href={item.href}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                scrollToId(item.href);
-                                setMenuOpen(false);
-                            }}
-                            className="six-caps-regular text-6xl text-off-white tracking-wider hover:text-cream transition-colors duration-300"
-                        >
-                            {item.label}
-                        </a>
-                    ))}
-                    <a
-                        href={profile.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-4 inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase text-cream"
+            <AnimatePresence>
+                {menuOpen && (
+                    <motion.div
+                        initial={{ clipPath: "inset(0 0 100% 0)" }}
+                        animate={{ clipPath: "inset(0 0 0% 0)" }}
+                        exit={{ clipPath: "inset(0 0 100% 0)" }}
+                        transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+                        className="fixed inset-0 z-40 bg-ink flex flex-col items-center justify-center gap-8 md:hidden"
                     >
-                        <GithubIcon className="w-4 h-4" />
-                        Stalk My Code
-                    </a>
-                </motion.div>
-            )}
+                        {navItems.map((item) => (
+                            <a
+                                key={item.href}
+                                href={item.href}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    scrollToId(item.href);
+                                    setMenuOpen(false);
+                                }}
+                                className="six-caps-regular text-6xl text-off-white tracking-wider hover:text-cream transition-colors duration-300"
+                            >
+                                {item.label}
+                            </a>
+                        ))}
+                        <a
+                            href={profile.github}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-4 inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase text-cream"
+                        >
+                            <GithubIcon className="w-4 h-4" />
+                            Stalk My Code
+                        </a>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 };

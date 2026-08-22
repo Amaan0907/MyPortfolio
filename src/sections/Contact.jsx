@@ -88,6 +88,10 @@ const Contact = () => {
                                 exit={{ opacity: 0, scale: 0.9, x: -16 }}
                                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                                 className="w-72 h-52.5 relative"
+                                style={{
+                                    WebkitMaskImage: "radial-gradient(circle at 0 50%, transparent 0 60px, black 61px)",
+                                    maskImage: "radial-gradient(circle at 0 50%, transparent 0 60px, black 61px)",
+                                }}
                                 data-lenis-prevent
                             >
                                 <OptionWheel
@@ -97,7 +101,7 @@ const Contact = () => {
                                     side="left"
                                     fontSize={1.6}
                                     spacing={1.5}
-                                    inset={0}
+                                    inset={76}
                                     curve={0.6}
                                     tilt={10}
                                     textColor="rgba(18,10,8,0.35)"

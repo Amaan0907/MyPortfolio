@@ -12,6 +12,8 @@
   user-select: none;
   touch-action: none;
   outline: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%);
 }
 
 .option-wheel--dragging {

@@ -80,6 +80,11 @@ const Preloader = ({ onComplete }) => {
                 </span>
                 %
             </p>
+            <p className="mt-6 max-w-[80vw] text-center text-[11px] leading-relaxed tracking-wide text-off-white/40 md:hidden">
+                This experience is crafted differently for every screen.
+                <br />
+                For the full interactive experience, desktop is recommended.
+            </p>
         </div>
     );
 };
